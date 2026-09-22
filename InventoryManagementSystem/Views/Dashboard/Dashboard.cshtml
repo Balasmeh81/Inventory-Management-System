@@ -1,0 +1,100 @@
+﻿@model DahboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+<link href="~/css/DashboardStayle.css" type="text/css" rel="stylesheet" />
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header mb-4">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title dashboard-title">Inventory Dashboard</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="dashboard-card summary-card">
+                    <div class="card-icon bg-primary-subtle text-primary">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <div class="card-info">
+                        <h6>Warehouses</h6>
+                        <h3>@Model.TotalWarehouse</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="dashboard-card summary-card">
+
+                    <div class="card-icon bg-success-subtle text-success">
+                        <i class="fas fa-box"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h6>Items</h6>
+                        <h3>@Model.TotalItem</h3>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="dashboard-card summary-card">
+                    <div class="card-icon bg-info-subtle text-info">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-info">
+                        <h6>Users</h6>
+                        <h3>@Model.TotalUser</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <!-- Warehouse Overview -->
+        <div class="row">
+            <div class="col-12">
+                <div class="dashboard-card section-card">
+                    <div class="section-header">
+                        <h5 class="mb-0">Warehouse Overview</h5>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table custom-table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Warehouse</th>
+                                    <th>City</th>
+                                    <th>Items</th>
+                                    <th>Employees</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(WarehouseOverviewDTO overView in Model.OverviewDTOs)
+                                {
+                                  <tr>
+                                    <td>@overView.WarehouseName</td>
+                                    <td>@overView.CityName</td>
+                                    <td>@overView.ItemsCount</td>
+                                    <td>@overView.UsersCount</td>
+                                  </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

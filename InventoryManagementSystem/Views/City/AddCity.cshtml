@@ -1,0 +1,90 @@
+﻿@model vmCity
+@{
+    ViewData["Title"] = "AddCity";
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					@if ((bool)ViewData["isEdit"] == false)
+					{
+						<h3 class="page-title">Add City</h3>
+					}
+					else
+					{
+						<h3 class="page-title">Edit City</h3>
+					}
+
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-sm-12">
+
+				<div class="card">
+					<div class="card-body">
+						<form method="post">
+							<div class="row">
+								<div class="col-12">
+									<h5 class="form-title"><span>City Information</span></h5>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<input type="hidden" asp-for="cityDTO.Id" class="form-control">
+									</div>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>City Name <span class="login-danger">*</span></label>
+										<input type="text" asp-for="cityDTO.Name" class="form-control">
+										<span asp-validation-for="cityDTO.Name" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>Country <span class="login-danger">*</span></label>
+										<select asp-for="cityDTO.Country_Id" class="form-control select">
+											<option value="">Select Country</option>
+											@foreach(CountryDTO countryDTO in Model.countryDTOs)
+											{
+												<option value="@countryDTO.Id"> @countryDTO.Name</option>
+											}
+											
+										</select>
+										<span asp-validation-for="cityDTO.Country_Id" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									@if ((bool)ViewData["isEdit"] == false)
+									{
+										<div class="student-submit">
+											<button type="submit" asp-action="CreateCity" class="btn btn-primary">Create</button>
+										</div>
+									}
+									 else
+									{
+										<div class="student-submit">
+											<button type="submit" asp-action="UpdateCity" class="btn btn-primary">Update</button>
+										</div>
+									} 
+
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->

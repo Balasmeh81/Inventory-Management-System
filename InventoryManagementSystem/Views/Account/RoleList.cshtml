@@ -1,0 +1,82 @@
+﻿@model List<RoleModel>
+@{
+    ViewData["Title"] = "RoleList";
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-sub-header">
+                <h3 class="page-title">Countris</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+
+<form method="post">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="card card-table comman-shadow">
+                <div class="card-body">
+
+                    <!-- Page Header -->
+
+                    <div class="page-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 class="page-title">All Roles</h3>
+                            </div>
+                            <div class="col-auto text-end float-end ms-auto download-grp">
+                                <a asp-action="AddRole" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Page Header -->
+
+                    <div class="table-responsive">
+                        <table class="table border-0 star-student table-hover table-center mb-0 table-striped">
+                            <thead class="student-thread">
+                                <tr>
+                                    <th>Role Name</th>
+
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (RoleModel role in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="student-details.html">@role.Name</a>
+                                            </h2>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="actions ">
+                                                <a asp-route-RoleId="@role.Id"
+                                                   asp-action="DeleteRole"
+                                                   class="btn btn-sm bg-danger-light me-2">
+                                                    <i class="feather-trash-2"></i>
+                                                </a>
+                                                <a asp-action="EditRole"
+                                                   asp-route-RoleId="@role.Id"
+                                                   class="btn btn-sm bg-danger-light">
+                                                    <i class="feather-edit"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

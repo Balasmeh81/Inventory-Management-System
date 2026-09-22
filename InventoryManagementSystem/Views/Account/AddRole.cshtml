@@ -1,0 +1,75 @@
+﻿@model RoleModel
+@{
+    ViewData["Title"] = "AddRole";
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					 @if ((bool)ViewData["isEdit"] == false)
+					{
+						<h3 class="page-title">Add Role</h3>
+					}
+				 	else
+					{
+						<h3 class="page-title">Update Role</h3>
+					} 
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-sm-12">
+
+				<div class="card">
+					<div class="card-body">
+						<form method="post">
+							<div class="row">
+								<div class="col-12">
+									<h5 class="form-title"><span>Role Information</span></h5>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<input type="hidden" asp-action="Id" asp-for="Id" class="form-control">
+									</div>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>Role Name <span class="login-danger">*</span></label>
+										<input type="text" asp-for="Name" class="form-control">
+										<span asp-validation-for="Name" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									 @if ((bool)ViewData["isEdit"] == false)
+									{
+										<div class="student-submit">
+											<button type="submit" asp-action="CreateRole" class="btn btn-primary">Create Role</button>
+										</div>
+									}
+									 else
+									{
+										<div class="student-submit">
+											<button type="submit" asp-action="UpdateRole" class="btn btn-primary">Update</button>
+										</div>
+									}
+
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->

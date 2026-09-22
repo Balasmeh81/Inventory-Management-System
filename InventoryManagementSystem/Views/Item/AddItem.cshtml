@@ -1,0 +1,119 @@
+﻿@model vmItem
+@{
+    ViewData["Title"] = "AddItem";
+    Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					@if ((bool)ViewData["isEdit"] == false)
+					{
+						<h3 class="page-title">Add Item</h3>
+					}
+				else
+					{
+						<h3 class="page-title">Edit Item</h3>
+					}
+
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-sm-12">
+
+				<div class="card">
+					<div class="card-body">
+						<form method="post">
+							<div class="row">
+								<div class="col-12">
+									<h5 class="form-title"><span>Item Information</span></h5>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<input type="hidden" asp-for="itemDTO.Id" class="form-control">
+									</div>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>Item Name <span class="login-danger">*</span></label>
+										<input asp-for="itemDTO.Name" type="text"  class="form-control">
+										<span asp-validation-for="itemDTO.Name" class="text-danger small"></span>
+									</div>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>Item QTY <span class="login-danger">*</span></label>
+										<input asp-for="itemDTO.QTY" type="text" class="form-control">
+										<span asp-validation-for="itemDTO.QTY" class="text-danger small"></span>
+									</div>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>SKUCode Item</label>
+										<input asp-for="itemDTO.SKUCode" type="text" class="form-control">
+									</div>
+								</div>
+
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>Cost Price <span class="login-danger">*</span></label>
+										<input asp-for="itemDTO.CostPrice" type="text" class="form-control">
+										<span asp-validation-for="itemDTO.CostPrice" class="text-danger small"></span>
+									</div>
+								</div>
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>MSRP Price <span class="login-danger">*</span></label>
+										<input asp-for="itemDTO.MSRPPrice" type="text" class="form-control">
+										<span asp-validation-for="itemDTO.MSRPPrice" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12 col-sm-4">
+									<div class="form-group local-forms">
+										<label>Warehouse <span class="login-danger">*</span></label>
+										<select asp-for="itemDTO.warehouse_Id" class="form-control select">
+											<option value="">Select Warehouse</option>
+											@foreach (WarehouseDTO warehouse in Model.warehouseDTOs)
+											{
+												<option value="@warehouse.Id">@warehouse.Name </option>
+											}
+
+										</select>
+										<span asp-validation-for="itemDTO.warehouse_Id" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									 @if ((bool)ViewData["isEdit"] == false)
+									{
+										<div class="student-submit">
+											<button type="submit" asp-action="CreateItem" class="btn btn-primary">Create</button>
+										</div>
+									}
+ 									else
+									{
+										<div class="student-submit">
+											<button type="submit" asp-action="UpdateItem" class="btn btn-primary">Update</button>
+										</div>
+									}
+
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+

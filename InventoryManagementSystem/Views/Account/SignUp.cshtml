@@ -1,0 +1,102 @@
+﻿@model vmSignUp
+@{
+	ViewData["Title"] = "SignUp";
+	Layout = "~/Views/Shared/_Menu.cshtml";
+}
+
+<!-- Main Wrapper -->
+<div class="main-wrapper login-body">
+	<div class="login-wrapper">
+		<div class="container">
+			<div class="loginbox">
+				<div class="login-left">
+					<img class="img-fluid" src="~/assets/img/SignUp.png" alt="Logo">
+				</div>
+				<div class="login-right">
+					<div class="login-right-wrap">
+						<h1>Create Account</h1>
+						<p class="account-subtitle">Enter details to create account</p>
+
+						<!-- Form -->
+						<form method="post">
+							<div class="row">
+								<div class="col-12">
+									<div class="form-group local-forms">
+										<label>Username <span class="login-danger">*</span></label>
+										<input asp-for="signUp.Name" class="form-control" type="text">
+										<span class="profile-views"><i class="fas fa-user-circle"></i></span>
+										<span asp-validation-for="signUp.Name" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="form-group local-forms">
+										<label>Email <span class="login-danger">*</span></label>
+										<input asp-for="signUp.Email" class="form-control" type="email">
+										<span class="profile-views"><i class="fas fa-envelope"></i></span>
+										<span asp-validation-for="signUp.Email" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="form-group local-forms">
+										<label>Password <span class="login-danger">*</span></label>
+										<input asp-for="signUp.Password" class="form-control pass-input" type="password">
+										<span class="fas fa-eye toggle-password"></span>
+										<span asp-validation-for="signUp.Password" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="form-group local-forms">
+										<label>Confirm password <span class="login-danger">*</span></label>
+										<input asp-for="signUp.ConfirmPassword" class="form-control pass-confirm" type="password">
+										<span class="fas fa-eye reg-toggle-password"></span>
+										<span asp-validation-for="signUp.ConfirmPassword" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="form-group local-forms">
+										<label>Role <span class="login-danger">*</span></label>
+										<select asp-for="signUp.RoleName" class="form-control select">
+											<option value="">Select Role</option>
+											@foreach (RoleModel role in Model.Roles)
+											{
+												<option value="@role.Name">@role.Name</option>
+											}
+										</select>
+										<span asp-validation-for="signUp.RoleName" class="text-danger small"></span>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="form-group local-forms">
+										<label>Warehouses <span class="login-danger">*</span></label>
+										<select asp-for="signUp.WarehouseId" class="form-control select">
+											<option value="">Select warehouse</option>
+											@foreach (WarehouseDTO warehouse in Model.warehouseDTOs)
+											{
+												<option value="@warehouse.Id">@warehouse.Name</option>
+											}
+										</select>
+										
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="form-group mb-0">
+										<button asp-action="CreateAccount" class="btn btn-primary btn-block" type="submit">Create</button>
+									</div>
+								</div>
+							</div>
+						</form>
+						<!-- /Form -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Main Wrapper -->
