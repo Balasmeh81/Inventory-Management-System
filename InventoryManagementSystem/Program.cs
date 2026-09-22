@@ -15,7 +15,11 @@ builder.Services.AddScoped<IWarehouseSevice, WarehouseSevice>();
 builder.Services.AddScoped<IItemService, ItemService>();
 
 builder.Services.AddDbContext<InventoryContext>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(
+    cfg => { },
+    AppDomain.CurrentDomain.GetAssemblies()
+);
 
 //Identity Classes
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
