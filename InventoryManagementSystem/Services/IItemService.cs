@@ -4,16 +4,16 @@ namespace InventoryManagementSystem.Services
 {
     public interface IItemService
     {
-        void SaveToDb(ItemDTO item);
+        Task SaveToDbAsync(ItemDTO item);
 
-        List<ItemDTO> GetAllItems();
+        Task<List<ItemDTO>> GetAllItemsAsync(CancellationToken cancellationToken);
 
-        void UpdateFromDb(ItemDTO itemDTO);
+        Task UpdateFromDbAsync(ItemDTO itemDTO);
 
-        ItemDTO GetItemById(int id);
+        Task<ItemDTO?> GetItemByIdAsync(int id);
 
-        void DeleteFromDb(int id);
+        Task DeleteFromDbAsync(int id);
 
-        int TotalItem();
+        Task<int> TotalItemAsync();
     }
 }

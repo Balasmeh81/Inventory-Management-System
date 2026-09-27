@@ -4,16 +4,16 @@ namespace InventoryManagementSystem.Services
 {
     public interface ICountryServices
     {
-        void SaveCountry(CountryDTO countryDTO);
+        Task SaveCountryAsync(CountryDTO countryDTO);
 
-        List<CountryDTO> GetAllCountry();
+        Task<List<CountryDTO>> GetAllCountryAsync();
 
-        CountryDTO GetCountryById(int id);
+        Task<CountryDTO?> GetCountryByIdAsync(int id);
 
-        void RemoveCountry(int id);
+        Task RemoveCountryAsync(int id);
 
-        void Update(CountryDTO countryDTO);
+        Task UpdateAsync(CountryDTO countryDTO);
 
-        List<CountryDTO> GetCountryByName(string name);
+        Task<List<CountryDTO>> GetCountryByNameAsync(string name);
     }
 }

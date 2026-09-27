@@ -27,44 +27,48 @@ namespace InventoryManagementSystem.Controllers
             return View("AddCountry");
         }
 
-        public IActionResult CreateCountry(CountryDTO countryDTO)
+        public async Task<IActionResult> CreateCountry(CountryDTO countryDTO)
         {
-            countryServices.SaveCountry(countryDTO);
+            await countryServices.SaveCountryAsync(countryDTO);
             ViewData["isEdit"] = false;
             return RedirectToAction("AddCountry");
         }
 
-        public ActionResult GetCountry(string? txtName)
+        public async Task<IActionResult> GetCountry(string? txtName)
         {
             List<CountryDTO> allCountries = new List<CountryDTO>();
             if (string.IsNullOrEmpty(txtName))
             {
-                allCountries = countryServices.GetAllCountry();
+                allCountries =await countryServices.GetAllCountryAsync();
             }
             else
             {
-                allCountries = countryServices.GetCountryByName(txtName);
+                allCountries =await countryServices.GetCountryByNameAsync(txtName);
             }
 
             return View("CountryList", allCountries);
         }
 
-        public IActionResult DeleteCountry(int CountryId)
+        public async Task<IActionResult> DeleteCountry(int CountryId)
         {
-            countryServices.RemoveCountry(CountryId);
+           await countryServices.RemoveCountryAsync(CountryId);
             return RedirectToAction("GetCountry");
         }
 
-        public IActionResult Edit(int CountryId)
+        public async Task<IActionResult> Edit(int CountryId)
         {
-            CountryDTO country = countryServices.GetCountryById(CountryId);
+            CountryDTO? country =await countryServices.GetCountryByIdAsync(CountryId);
+            if(country==null)
+            {
+                return NotFound();
+            }
             ViewData["isEdit"] = true;
             return View("AddCountry", country);
         }
 
-        public IActionResult UpdateCountry(CountryDTO countryDTO)
+        public async Task<IActionResult> UpdateCountry(CountryDTO countryDTO)
         {
-            countryServices.Update(countryDTO);
+           await countryServices.UpdateAsync(countryDTO);
             return RedirectToAction("GetCountry");
         }
     }

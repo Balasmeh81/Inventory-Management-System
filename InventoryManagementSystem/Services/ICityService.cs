@@ -4,16 +4,16 @@ namespace InventoryManagementSystem.Services
 {
     public interface ICityService
     {
-        void SaveCity(CityDTO cityDTO);
+        Task SaveCityAsync(CityDTO cityDTO);
 
-        List<CityDTO> GetAllCity();
+        Task<List<CityDTO>> GetAllCityAsync();
 
-        CityDTO GetCityById(int id);
+        Task<CityDTO?> GetCityByIdAsync(int id);
 
-        List<CityDTO> GetCityByName(string name);
+        Task<List<CityDTO>> GetCityByNameAsync(string name);
 
-        void UpdateFromDb(CityDTO cityDTO);
+        Task UpdateFromDbAsync(CityDTO cityDTO);
 
-        void RemoveFromDb(int Id);
+        Task RemoveFromDbAsync(int Id);
     }
 }

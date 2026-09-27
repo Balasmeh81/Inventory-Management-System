@@ -4,20 +4,20 @@ namespace InventoryManagementSystem.Services
 {
     public interface IWarehouseSevice
     {
-        void SaveInDb(WarehouseDTO warehouseDTO);
+        Task SaveInDbAsync(WarehouseDTO warehouseDTO);
 
-        List<WarehouseDTO> GetAllWarehouses();
+        Task<List<WarehouseDTO>> GetAllWarehousesAsync();
 
-        List<WarehouseDTO> GetWarehouseByName(string name);
+        Task<List<WarehouseDTO>> GetWarehouseByNameAsync(string name);
 
-        WarehouseDTO GetWarehouseById(int id);
+        Task<WarehouseDTO?> GetWarehouseByIdAsync(int id);
 
-        void UpdateFromDb(WarehouseDTO warehouseDTO);
+        Task UpdateFromDbAsync(WarehouseDTO warehouseDTO);
 
-        void DeleteFromDb(int id);
+        Task DeleteFromDbAsync(int id);
 
-        int TotalWarehouse();
+        Task<int> TotalWarehouseAsync();
 
-        Task<List<WarehouseOverviewDTO>> GetGeneralInfo();
+        Task<List<WarehouseOverviewDTO>> GetGeneralInfoAsync();
     }
 }

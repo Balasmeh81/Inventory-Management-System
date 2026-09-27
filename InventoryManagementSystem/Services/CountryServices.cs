@@ -16,51 +16,61 @@ namespace InventoryManagementSystem.Services
             mapper = _mapper;
         }
 
-        public void SaveCountry(CountryDTO countryDTO)
+        // Adds a new country to the database.
+        public async Task SaveCountryAsync(CountryDTO countryDTO)
         {
             Country newCountry = new Country();
             newCountry = mapper.Map<Country>(countryDTO);
             context.Countries.Add(newCountry);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public List<CountryDTO> GetAllCountry()
+        // Gets all countries from the database.
+        public async Task<List<CountryDTO>> GetAllCountryAsync()
         {
-            List<Country> countries = context.Countries.ToList();
+            List<Country> countries =await context.Countries.ToListAsync();
             List<CountryDTO> allCountries = new List<CountryDTO>();
             allCountries = mapper.Map<List<CountryDTO>>(countries);
 
             return allCountries;
         }
 
-        public void RemoveCountry(int id)
+        // Deletes a country by its ID.
+        public async Task RemoveCountryAsync(int id)
         {
-            Country? country = context.Countries.Find(id);
+            Country? country =await context.Countries.FindAsync(id);
             if (country != null)
             {
                 context.Countries.Remove(country);
-                context.SaveChanges();
+               await context.SaveChangesAsync();
             }
         }
 
-        public CountryDTO GetCountryById(int id)
+        // Gets a country by its ID.
+        public async Task<CountryDTO?> GetCountryByIdAsync(int id)
         {
-            Country country = context.Countries.Find(id);
+            Country? country =await context.Countries.FindAsync(id);
+            if(country == null)
+            {
+                return null;
+            }
             CountryDTO countryDTO = mapper.Map<CountryDTO>(country);
             return countryDTO;
         }
 
-        public void Update(CountryDTO countryDTO)
+        // Updates an existing country.
+        public async Task UpdateAsync(CountryDTO countryDTO)
         {
             Country country = mapper.Map<Country>(countryDTO);
             context.Countries.Attach(country);
             context.Entry(country).State = EntityState.Modified;
-            context.SaveChanges();
+          await  context.SaveChangesAsync();
         }
 
-        public List<CountryDTO> GetCountryByName(string name)
+        // Searches countries by name.
+        public async Task<List<CountryDTO>> GetCountryByNameAsync(string name)
         {
-            List<Country> country = context.Countries.Where(n => n.Name == name).ToList();
+            List<Country> country =await context.Countries.Where(c=>c.Name.Contains(name)).ToListAsync();
             List<CountryDTO> allCountry = mapper.Map<List<CountryDTO>>(country);
 
             return allCountry;

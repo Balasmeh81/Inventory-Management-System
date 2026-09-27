@@ -17,28 +17,32 @@ namespace InventoryManagementSystem.Services
             context = _context;
         }
 
-        public void SaveInDb(WarehouseDTO warehouseDTO)
+        // Adds a new warehouse to the database.
+        public async Task SaveInDbAsync(WarehouseDTO warehouseDTO)
         {
             Warehouse newWarehouse = mapper.Map<Warehouse>(warehouseDTO);
             context.Warehouses.Add(newWarehouse);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public List<WarehouseDTO> GetAllWarehouses()
+        // Gets all warehouses with their related city data.
+        public async Task<List<WarehouseDTO>> GetAllWarehousesAsync()
         {
-            List<Warehouse> warehouses = context.Warehouses.Include("city").OrderBy(w => w.city.Country_Id).ToList();
+            List<Warehouse> warehouses =await context.Warehouses.Include("city").OrderBy(w => w.city.Country_Id).ToListAsync();
             List<WarehouseDTO> warehouseDTOs = mapper.Map<List<WarehouseDTO>>(warehouses);
 
             return warehouseDTOs;
         }
 
-        public int TotalWarehouse()
+        // Returns the total number of warehouses.
+        public async Task<int> TotalWarehouseAsync()
         {
-            int totalWarehouse = context.Warehouses.Count();
+            int totalWarehouse =await context.Warehouses.CountAsync();
             return totalWarehouse;
         }
 
-        public async Task<List<WarehouseOverviewDTO>> GetGeneralInfo()
+        // Gets warehouse summary information for the dashboard.
+        public async Task<List<WarehouseOverviewDTO>> GetGeneralInfoAsync()
         {
             var warehouses = await context.Warehouses
         .Select(w => new WarehouseOverviewDTO
@@ -53,36 +57,48 @@ namespace InventoryManagementSystem.Services
             return warehouses;
         }
 
-        public List<WarehouseDTO> GetWarehouseByName(string name)
+        // Searches warehouses by name.
+        public async Task<List<WarehouseDTO>> GetWarehouseByNameAsync(string name)
         {
-            List<Warehouse> warehouse = context.Warehouses.Include("city")
+            List<Warehouse> warehouse =await context.Warehouses.Include("city")
                 .Where(w => w.Name.Contains(name))
-                .ToList();
+                .ToListAsync();
             List<WarehouseDTO> warehouseDTO = mapper.Map<List<WarehouseDTO>>(warehouse);
             return warehouseDTO;
         }
 
-        public WarehouseDTO GetWarehouseById(int id)
+        // Gets a warehouse by its ID.
+        public async Task<WarehouseDTO?> GetWarehouseByIdAsync(int id)
         {
-            Warehouse warehouse = context.Warehouses.Find(id);
+            Warehouse? warehouse =await context.Warehouses.FindAsync(id);
+            if (warehouse == null)
+            {
+                return null;
+            }
             WarehouseDTO warehouseDTO = mapper.Map<WarehouseDTO>(warehouse);
             return warehouseDTO;
         }
 
-        public void UpdateFromDb(WarehouseDTO warehouseDTO)
+        // Updates an existing warehouse in the database.
+        public async Task UpdateFromDbAsync(WarehouseDTO warehouseDTO)
         {
             Warehouse warehouse = mapper.Map<Warehouse>(warehouseDTO);
 
             context.Warehouses.Attach(warehouse);
             context.Entry(warehouse).State = EntityState.Modified;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void DeleteFromDb(int id)
+        // Deletes a warehouse by its ID.
+        public async Task DeleteFromDbAsync(int id)
         {
-            Warehouse warehouse = context.Warehouses.Find(id);
+            Warehouse? warehouse =await context.Warehouses.FindAsync(id);
+            if(warehouse == null)
+            {
+                return;
+            }
             context.Warehouses.Remove(warehouse);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -16,45 +16,54 @@ namespace InventoryManagementSystem.Services
             mapper = _mapper;
         }
 
-        public void SaveToDb(ItemDTO item)
+        public async Task SaveToDbAsync(ItemDTO item)
         {
             Item newItem = mapper.Map<Item>(item);
             context.Items.Add(newItem);
-            context.SaveChanges();
+           await context.SaveChangesAsync();
         }
 
-        public List<ItemDTO> GetAllItems()
+        public async Task<List<ItemDTO>> GetAllItemsAsync(CancellationToken cancellationToken)
         {
-            List<Item> items = context.Items.Include("warehouse").ToList();
+            List<Item> items = await context.Items.Include("warehouse").ToListAsync(cancellationToken);
             List<ItemDTO> allItems = mapper.Map<List<ItemDTO>>(items);
             return allItems;
         }
 
-        public void UpdateFromDb(ItemDTO itemDTO)
+        public async Task UpdateFromDbAsync(ItemDTO itemDTO)
         {
             Item item = mapper.Map<Item>(itemDTO);
             context.Items.Attach(item);
             context.Entry(item).State = EntityState.Modified;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public ItemDTO GetItemById(int id)
+        public async Task<ItemDTO?> GetItemByIdAsync(int id)
         {
-            Item item = context.Items.Find(id);
+            Item? item = await context.Items.FindAsync(id);
+            if (item == null)
+            {
+                return null;
+            }
             ItemDTO itemDTO = mapper.Map<ItemDTO>(item);
             return itemDTO;
         }
 
-        public void DeleteFromDb(int id)
+        public async Task DeleteFromDbAsync(int id)
         {
-            Item item = context.Items.Find(id);
+            Item? item = await context.Items.FindAsync(id);
+            if (item == null)
+            {
+                return;
+            }
+
             context.Items.Remove(item);
-            context.SaveChanges();
+           await context.SaveChangesAsync();
         }
 
-        public int TotalItem()
+        public async Task<int> TotalItemAsync()
         {
-            return context.Items.Count();
+            return await context.Items.CountAsync();
         }
     }
 }

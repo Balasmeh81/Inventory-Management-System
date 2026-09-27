@@ -16,51 +16,59 @@ namespace InventoryManagementSystem.Services
             context = _context;
         }
 
-        public void SaveCity(CityDTO cityDTO)
+        public async Task SaveCityAsync(CityDTO cityDTO)
         {
             City newCity = mapper.Map<City>(cityDTO);
             context.Cities.Add(newCity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public List<CityDTO> GetAllCity()
+        public async Task<List<CityDTO>> GetAllCityAsync()
         {
-            List<City> cities = context.Cities
+            List<City> cities =await context.Cities
                 .OrderBy(c => c.Country_Id)
-                .ToList();
+                .ToListAsync();
             List<CityDTO> allCities = mapper.Map<List<CityDTO>>(cities);
             return allCities;
         }
 
-        public CityDTO GetCityById(int id)
+        public async Task<CityDTO?> GetCityByIdAsync(int id)
         {
-            City city = context.Cities.Find(id);
+            City? city =await context.Cities.FindAsync(id);
+            if (city == null)
+            {
+                return null;
+            }
             CityDTO cityDTO = mapper.Map<CityDTO>(city);
             return cityDTO;
         }
 
-        public List<CityDTO> GetCityByName(string name)
+        public async Task<List<CityDTO>> GetCityByNameAsync(string name)
         {
-            List<City> cities = context.Cities.Where(n => n.Name == name).ToList();
+            List<City> cities = await context.Cities.Where(c => c.Name.Contains(name)).ToListAsync();
             List<CityDTO> cityDTOs = mapper.Map<List<CityDTO>>(cities);
             return cityDTOs;
         }
 
-        public void RemoveFromDb(int Id)
+        public async Task RemoveFromDbAsync(int Id)
         {
             //context.Cities.FirstOrDefault();
-            City city = context.Cities.Find(Id);
+            City? city =await context.Cities.FindAsync(Id);
+            if (city == null)
+            {
+                return;
+            }
             context.Cities.Remove(city);
-            context.SaveChanges();
+           await context.SaveChangesAsync();
         }
 
-        public void UpdateFromDb(CityDTO cityDTO)
+        public async Task UpdateFromDbAsync(CityDTO cityDTO)
         {
             City city = mapper.Map<City>(cityDTO);
 
             context.Cities.Attach(city);
             context.Entry(city).State = EntityState.Modified;
-            context.SaveChanges();
+           await context.SaveChangesAsync();
         }
     }
 }

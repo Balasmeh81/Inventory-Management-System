@@ -26,56 +26,64 @@ namespace InventoryManagementSystem.Controllers
             return View("WarehouseList", warehouseDTOs);
         }
 
-        public IActionResult AddWarehouse()
+        public async Task<IActionResult> AddWarehouse()
         {
             vmWarehouse vm = new vmWarehouse();
-            vm.countries = countryServices.GetAllCountry();
-            vm.cities = cityServices.GetAllCity();
+            vm.countries =await countryServices.GetAllCountryAsync();
+            vm.cities =await cityServices.GetAllCityAsync();
             ViewData["isEdit"] = false;
             return View("AddWarehouse", vm);
         }
 
-        public IActionResult CreateWarehouse(vmWarehouse vm)
+        public async Task<IActionResult> CreateWarehouse(vmWarehouse vm)
         {
-            warehouseSevice.SaveInDb(vm.warehouseDTO);
+            await warehouseSevice.SaveInDbAsync(vm.warehouseDTO);
             return RedirectToAction("Index");
         }
 
-        public IActionResult GetWarehouse(string? txtName)
+        public async Task<IActionResult> GetWarehouse(string? txtName)
         {
             List<WarehouseDTO> warehouseDTOs;
             if (string.IsNullOrWhiteSpace(txtName))
             {
-                warehouseDTOs = warehouseSevice.GetAllWarehouses();
+                warehouseDTOs =await warehouseSevice.GetAllWarehousesAsync();
             }
             else
             {
-                warehouseDTOs = warehouseSevice.GetWarehouseByName(txtName);
+                warehouseDTOs =await warehouseSevice.GetWarehouseByNameAsync(txtName);
             }
 
             return View("WarehouseList", warehouseDTOs);
         }
 
-        public IActionResult Edit(int WarehouseId)
+        public async Task<IActionResult> Edit(int WarehouseId)
         {
-            WarehouseDTO warehouseDTO = warehouseSevice.GetWarehouseById(WarehouseId);
+            WarehouseDTO? warehouseDTO =await warehouseSevice.GetWarehouseByIdAsync(WarehouseId);
+            if(warehouseDTO==null)
+            {
+                return NotFound();
+            }
             vmWarehouse vm = new vmWarehouse();
+
             vm.warehouseDTO = warehouseDTO;
-            vm.countries = countryServices.GetAllCountry();
-            vm.cities = cityServices.GetAllCity();
+
+            vm.countries =await countryServices.GetAllCountryAsync();
+            vm.cities =await cityServices.GetAllCityAsync();
+
             ViewData["isEdit"] = true;
+
             return View("AddWarehouse", vm);
         }
 
-        public IActionResult UpdateWarehouse(WarehouseDTO warehouseDTO)
+        public async Task<IActionResult> UpdateWarehouse(WarehouseDTO warehouseDTO)
         {
-            warehouseSevice.UpdateFromDb(warehouseDTO);
+            await warehouseSevice.UpdateFromDbAsync(warehouseDTO);
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteWarehouse(int WarehouseId)
+        public async Task<IActionResult> DeleteWarehouse(int WarehouseId)
         {
-            warehouseSevice.DeleteFromDb(WarehouseId);
+           await warehouseSevice.DeleteFromDbAsync(WarehouseId);
 
             return RedirectToAction("Index");
         }

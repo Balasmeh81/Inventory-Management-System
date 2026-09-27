@@ -17,17 +17,17 @@ namespace InventoryManagementSystem.Controllers
             cityService = _cityService;
         }
 
-        public IActionResult AddCity()
+        public async Task<IActionResult> AddCity()
         {
             vmCity vm = new vmCity();
             ViewData["isEdit"] = false;
-            vm.countryDTOs = countryServices.GetAllCountry().ToList();
+            vm.countryDTOs =await countryServices.GetAllCountryAsync();
             return View("AddCity", vm);
         }
 
-        public IActionResult CreateCity(vmCity vm)
+        public async Task<IActionResult> CreateCity(vmCity vm)
         {
-            cityService.SaveCity(vm.cityDTO);
+          await  cityService.SaveCityAsync(vm.cityDTO);
 
             return RedirectToAction("CityList");
         }
@@ -38,42 +38,46 @@ namespace InventoryManagementSystem.Controllers
             return View("CityList", cityDTOs);
         }
 
-        public IActionResult GetCity(string? txtName)
+        public async Task<IActionResult> GetCity(string? txtName)
         {
             List<CityDTO> allCities = new List<CityDTO>();
 
             if (txtName == null)
             {
-                allCities = cityService.GetAllCity();
+                allCities =await cityService.GetAllCityAsync();
             }
             else
             {
-                allCities = cityService.GetCityByName(txtName);
+                allCities =await cityService.GetCityByNameAsync(txtName);
             }
 
             return View("CityList", allCities);
         }
 
-        public IActionResult Delete(int CityId)
+        public async Task<IActionResult> Delete(int CityId)
         {
-            cityService.RemoveFromDb(CityId);
+           await cityService.RemoveFromDbAsync(CityId);
 
             return RedirectToAction("CityList");
         }
 
-        public IActionResult Edit(int CityId)
+        public async Task<IActionResult> Edit(int CityId)
         {
             vmCity vm = new vmCity();
-            vm.cityDTO = cityService.GetCityById(CityId);
+            vm.cityDTO =await cityService.GetCityByIdAsync(CityId);
+            if (vm.cityDTO == null)
+            {
+                return NotFound();
+            }
 
             ViewData["isEdit"] = true;
-            vm.countryDTOs = countryServices.GetAllCountry().ToList();
+            vm.countryDTOs =await countryServices.GetAllCountryAsync();
             return View("AddCity", vm);
         }
 
-        public IActionResult UpdateCity(vmCity vm)
+        public async Task<IActionResult> UpdateCity(vmCity vm)
         {
-            cityService.UpdateFromDb(vm.cityDTO);
+           await cityService.UpdateFromDbAsync(vm.cityDTO);
             return RedirectToAction("CityList");
         }
     }

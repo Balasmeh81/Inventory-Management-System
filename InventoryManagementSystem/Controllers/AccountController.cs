@@ -19,9 +19,9 @@ namespace InventoryManagementSystem.Controllers
             warehouseSevice = _warehouseSevice;
         }
 
-        public IActionResult SignUp()
+        public async Task<IActionResult> SignUp()
         {
-            List<WarehouseDTO> warehouseDTOs = warehouseSevice.GetAllWarehouses();
+            List<WarehouseDTO> warehouseDTOs =await warehouseSevice.GetAllWarehousesAsync();
             vmSignUp vm = new vmSignUp();
             vm.warehouseDTOs = warehouseDTOs;
             List<RoleModel> allroles = accountService.GetAllRole();

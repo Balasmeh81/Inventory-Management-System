@@ -1,4 +1,5 @@
-﻿using InventoryManagementSystem.Models;
+﻿using InventoryManagementSystem.data;
+using InventoryManagementSystem.Models;
 using InventoryManagementSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,45 +24,50 @@ namespace InventoryManagementSystem.Controllers
             return View("ItemList", itemDTOs);
         }
 
-        public IActionResult AddItem()
+        public async Task<IActionResult> AddItem()
         {
             vmItem vm = new vmItem();
-            vm.warehouseDTOs = warehouseService.GetAllWarehouses();
+            vm.warehouseDTOs =await warehouseService.GetAllWarehousesAsync();
             ViewData["isEdit"] = false;
             return View("AddItem", vm);
         }
 
-        public IActionResult CreateItem(vmItem vm)
+        public async Task<IActionResult> CreateItem(vmItem vm)
         {
-            itemService.SaveToDb(vm.itemDTO);
+           await itemService.SaveToDbAsync(vm.itemDTO);
             return RedirectToAction("Index");
         }
 
-        public IActionResult GetItem()
+        public async Task<IActionResult> GetItem(CancellationToken cancellationToken)
         {
-            List<ItemDTO> itemDTOs = itemService.GetAllItems();
+            List<ItemDTO> itemDTOs = await itemService.GetAllItemsAsync(cancellationToken);
             return View("ItemList", itemDTOs);
         }
 
-        public IActionResult Edit(int itemid)
+        public async Task<IActionResult> Edit(int itemid)
         {
-            ItemDTO itemDTO = itemService.GetItemById(itemid);
+            ItemDTO? itemDTO = await itemService.GetItemByIdAsync(itemid);
+            if (itemDTO == null)
+            {
+                return NotFound();
+            }
+
             vmItem vm = new vmItem();
             vm.itemDTO = itemDTO;
-            vm.warehouseDTOs = warehouseService.GetAllWarehouses();
+            vm.warehouseDTOs =await warehouseService.GetAllWarehousesAsync();
             ViewData["isEdit"] = true;
             return View("AddItem", vm);
         }
 
-        public IActionResult UpdateItem(vmItem vm)
+        public async Task<IActionResult> UpdateItem(vmItem vm)
         {
-            itemService.UpdateFromDb(vm.itemDTO);
+           await itemService.UpdateFromDbAsync(vm.itemDTO);
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(int itemid)
+        public async Task<IActionResult> Delete(int itemid)
         {
-            itemService.DeleteFromDb(itemid);
+           await itemService.DeleteFromDbAsync(itemid);
 
             return RedirectToAction("Index");
         }

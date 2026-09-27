@@ -24,9 +24,9 @@ namespace InventoryManagementSystem.Controllers
         {
             DahboardModel model = new DahboardModel();
             model.TotalUser = await accountService.TotalUser();
-            model.TotalWarehouse = wearehouseSevice.TotalWarehouse();
-            model.TotalItem = itemService.TotalItem();
-            model.OverviewDTOs = await wearehouseSevice.GetGeneralInfo();
+            model.TotalWarehouse =await wearehouseSevice.TotalWarehouseAsync();
+            model.TotalItem = await itemService.TotalItemAsync();
+            model.OverviewDTOs = await wearehouseSevice.GetGeneralInfoAsync();
 
             return View("Dashboard", model);
         }
