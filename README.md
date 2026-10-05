@@ -176,3 +176,21 @@ Update-Database
 6. Run the application from Visual Studio.
 
 The application starts on the sign-in page.
+
+
+## Screenshots
+
+### Login
+![Login](docs/screenshots/Login.png)
+
+### Dashboard
+![Dashboard](docs/screenshots/Dashboard.png)
+
+### Items
+![Items](docs/screenshots/Items.png)
+
+### Warehouses
+![Warehouses](docs/screenshots/Warehouses.png)
+
+### Add Item
+![Add Item](docs/screenshots/Add-Item.png)
